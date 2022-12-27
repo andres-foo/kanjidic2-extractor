@@ -4,4 +4,5 @@
 
 # Conventional directory for build output.
 build/
-data/
+data/input/kanjidic2.xml
+data/output/kanjis.db
