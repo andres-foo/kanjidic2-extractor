@@ -3,7 +3,7 @@ import 'package:xml/xml.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 void main() async {
-  final outputFile = 'data/output/kanji.db';
+  final outputFile = 'data/output/kanjis.db';
   final inputFile = 'data/input/kanjidic2.xml';
   final separator = ';';
 
