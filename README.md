@@ -7,7 +7,7 @@ A small script to turn the basic data from KANJIDIC2 (kanjidic2.xml) into a sqli
 
 
 ## Resulting database
-The resulting database is created with the following sql:
+For reference, the resulting database is created with the following sql:
 ```
 CREATE TABLE IF NOT EXISTS kanjis  (
     literal TEXT NOT NULL PRIMARY KEY,
