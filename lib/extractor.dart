@@ -24,7 +24,7 @@ void main() async {
   // will contain the whole sql
   String sql = "INSERT INTO kanjis ";
   sql +=
-      "(literal, meanings, strokes, frequency, jlpt, heisg6, onReadings, kunReadings) VALUES ";
+      "(literal, meanings, onReadings, kunReadings, strokes, frequency, jlpt, heisg6) VALUES ";
 
   List<String> values = [];
 
@@ -103,6 +103,7 @@ void main() async {
       if (i > 3) {
         sql += values.join(", ");
         print(sql);
+        db.execute(sql);
         // close db
         db.dispose();
         exit(1);
