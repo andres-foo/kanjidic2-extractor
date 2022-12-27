@@ -8,6 +8,9 @@ void main() async {
   final separator = ';';
 
   // database
+  var file = File(outputFile);
+  if (file.existsSync()) file.deleteSync();
+
   final db = sqlite3.open(outputFile);
   db.execute('''
     CREATE TABLE IF NOT EXISTS kanjis  (
