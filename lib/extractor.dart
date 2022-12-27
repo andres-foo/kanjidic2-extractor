@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'package:xml/xml.dart';
+import 'package:sqlite3/sqlite3.dart';
 
 void main() async {
-  final outputFile = 'data/output/kanji.sql';
+  final outputFile = 'data/output/kanji.db';
   final inputFile = 'data/input/kanjidic2.xml';
   final separator = ';';
+
+  // database
+  final db = sqlite3.open(outputFile);
+  db.dispose();
 
   File(inputFile).readAsString().then((String contents) {
     var document = XmlDocument.parse(contents);
