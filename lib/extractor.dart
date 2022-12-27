@@ -88,16 +88,11 @@ void main() async {
       // add to sql
       sql +=
           "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $grade, $heisig6),";
-
-      // test
-      if (i > 501) {
-        sql = sql.substring(0, sql.length - 1);
-        print(sql);
-        db.execute(sql);
-        // close db
-        db.dispose();
-        exit(1);
-      }
     } //for
+    sql = sql.substring(0, sql.length - 1);
+    //print(sql);
+    db.execute(sql);
+    // close db
+    db.dispose();
   });
 }
