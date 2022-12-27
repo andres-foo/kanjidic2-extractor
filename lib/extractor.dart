@@ -18,13 +18,14 @@ void main() async {
       strokes INTEGER NULL,
       frequency INTEGER NULL,
       jlpt INTEGER NULL,
+      grade INTEGER NULL,
       heisg6 INTEGER NULL
     );
   ''');
   // will contain the whole sql
   String sql = "INSERT INTO kanjis ";
   sql +=
-      "(literal, meanings, onReadings, kunReadings, strokes, frequency, jlpt, heisg6) VALUES ";
+      "(literal, meanings, onReadings, kunReadings, strokes, frequency, jlpt, grade, heisg6) VALUES ";
 
   List<String> values = [];
 
@@ -83,7 +84,7 @@ void main() async {
 
       // add to sql
       values.add(
-          "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $heisig6)");
+          "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $grade, $heisig6)");
       // CHECK OUTPUT
       // literal
       print('Character: ' + literal);
