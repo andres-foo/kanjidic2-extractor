@@ -10,18 +10,23 @@ void main() async {
   // database
   final db = sqlite3.open(outputFile);
   db.execute('''
-    CREATE TABLE kanjis (
+    CREATE TABLE IF NOT EXISTS kanjis  (
       literal TEXT NOT NULL PRIMARY KEY,
       meanings TEXT NOT NULL,
-      strokes INTEGER NOT NULL,
+      onReadings TEXT NULL,
+      kunReadings TEXT NULL,
+      strokes INTEGER NULL,
       frequency INTEGER NULL,
       jlpt INTEGER NULL,
-      heisg6 INTEGER NULL,
-      onReadings TEXT NULL,
-      kunReadings TEXT NULL
+      heisg6 INTEGER NULL
     );
   ''');
-  db.dispose();
+  // will contain the whole sql
+  String sql = "INSERT INTO kanjis ";
+  sql +=
+      "(literal, meanings, strokes, frequency, jlpt, heisg6, onReadings, kunReadings) VALUES ";
+
+  List<String> values = [];
 
   File(inputFile).readAsString().then((String contents) {
     var document = XmlDocument.parse(contents);
@@ -56,26 +61,29 @@ void main() async {
 
       // strokes
       var strokes_ = character.findAllElements('stroke_count');
-      var strokes = strokes_.isEmpty ? '-' : strokes_.single.text;
+      var strokes = strokes_.isEmpty ? 'null' : strokes_.single.text;
 
       // grade
       var grade_ = character.findAllElements('grade');
-      var grade = grade_.isEmpty ? '-' : grade_.single.text;
+      var grade = grade_.isEmpty ? 'null' : grade_.single.text;
 
       // frequency
       var freq_ = character.findAllElements('freq');
-      var freq = freq_.isEmpty ? '-' : freq_.single.text;
+      var freq = freq_.isEmpty ? 'null' : freq_.single.text;
 
       // jlpt
       var jlpt_ = character.findAllElements('jlpt');
-      var jlpt = jlpt_.isEmpty ? '-' : jlpt_.single.text;
+      var jlpt = jlpt_.isEmpty ? 'null' : jlpt_.single.text;
 
       // remembering the kanji 6
       var heisig6_ = character
           .findAllElements('dic_ref')
           .where((node) => node.attributes.first.value == "heisig6");
-      var heisig6 = heisig6_.isEmpty ? '-' : heisig6_.single.text;
+      var heisig6 = heisig6_.isEmpty ? 'null' : heisig6_.single.text;
 
+      // add to sql
+      values.add(
+          "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $heisig6)");
       // CHECK OUTPUT
       // literal
       print('Character: ' + literal);
@@ -92,7 +100,13 @@ void main() async {
       print('heisig6: ' + heisig6);
 
       // test
-      if (i > 3) exit(1);
-    }
+      if (i > 3) {
+        sql += values.join(", ");
+        print(sql);
+        // close db
+        db.dispose();
+        exit(1);
+      }
+    } //for
   });
 }
