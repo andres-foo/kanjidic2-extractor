@@ -30,12 +30,11 @@ void main() async {
   sql +=
       "(literal, meanings, onReadings, kunReadings, strokes, frequency, jlpt, grade, heisg6) VALUES ";
 
-  List<String> values = [];
-
   File(inputFile).readAsString().then((String contents) {
     var document = XmlDocument.parse(contents);
 
     var characters = document.findAllElements('character');
+    print("There are ${characters.length} characters");
     int i = 0;
     for (var character in characters) {
       i++;
@@ -65,7 +64,7 @@ void main() async {
 
       // strokes
       var strokes_ = character.findAllElements('stroke_count');
-      var strokes = strokes_.isEmpty ? 'null' : strokes_.single.text;
+      var strokes = strokes_.isEmpty ? 'null' : strokes_.first.text;
 
       // grade
       var grade_ = character.findAllElements('grade');
@@ -86,26 +85,12 @@ void main() async {
       var heisig6 = heisig6_.isEmpty ? 'null' : heisig6_.single.text;
 
       // add to sql
-      values.add(
-          "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $grade, $heisig6)");
-      // CHECK OUTPUT
-      // literal
-      print('Character: ' + literal);
-      // meanings
-      print('meanings: ' + meanings);
-      // readings
-      print('on readings: ' + onReadings);
-      print('kun readings: ' + kunReadings);
-      // metadata
-      print('strokes: ' + strokes);
-      print('grade: ' + grade);
-      print('frequency: ' + freq);
-      print('jlpt: ' + jlpt);
-      print('heisig6: ' + heisig6);
+      sql +=
+          "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $grade, $heisig6),";
 
       // test
-      if (i > 3) {
-        sql += values.join(", ");
+      if (i > 10) {
+        sql = sql.substring(0, sql.length - 1);
         print(sql);
         db.execute(sql);
         // close db
