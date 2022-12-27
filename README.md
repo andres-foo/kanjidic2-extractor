@@ -47,7 +47,7 @@ You can obtain the latest version of kanjidic2.xml from the website [KANJIDIC Pr
 
 3.- Run the script with:
 
-```dart lib/extractor.dart```
+```dart run extractor```
 
 4.- The generated sqlite database will be located at:
 
