@@ -1,6 +1,3 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
-
 # KanjiDic extractor
 
 A small script to turn the basic data from KANJIDIC2 (kanjidic2.xml) into a sqlite3 database file with a single table.
