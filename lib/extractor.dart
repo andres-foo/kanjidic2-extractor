@@ -4,7 +4,7 @@ import 'package:xml/xml.dart';
 void main() async {
   final outputFile = 'data/output/kanji.sql';
   final inputFile = 'data/input/kanjidic2.xml';
-  final separator = ',';
+  final separator = ';';
 
   File(inputFile).readAsString().then((String contents) {
     var document = XmlDocument.parse(contents);
@@ -15,7 +15,6 @@ void main() async {
       i++;
       // the character
       var literal = character.findElements('literal').single.text;
-      print(literal);
 
       // meanings
       var meanings = character
@@ -38,6 +37,10 @@ void main() async {
           .map((node) => node.text)
           .join(separator);
 
+      // strokes
+      var strokes_ = character.findAllElements('stroke_count');
+      var strokes = strokes_.isEmpty ? '-' : strokes_.single.text;
+
       // grade
       var grade_ = character.findAllElements('grade');
       var grade = grade_.isEmpty ? '-' : grade_.single.text;
@@ -55,7 +58,21 @@ void main() async {
           .findAllElements('dic_ref')
           .where((node) => node.attributes.first.value == "heisig6");
       var heisig6 = heisig6_.isEmpty ? '-' : heisig6_.single.text;
-      print(heisig6);
+
+      // CHECK OUTPUT
+      // literal
+      print('Character: ' + literal);
+      // meanings
+      print('meanings: ' + meanings);
+      // readings
+      print('on readings: ' + onReadings);
+      print('kun readings: ' + kunReadings);
+      // metadata
+      print('strokes: ' + strokes);
+      print('grade: ' + grade);
+      print('frequency: ' + freq);
+      print('jlpt: ' + jlpt);
+      print('heisig6: ' + heisig6);
 
       // test
       if (i > 3) exit(1);
