@@ -46,7 +46,8 @@ void main() async {
           .findAllElements('meaning')
           .where((node) => node.attributes.isEmpty)
           .map((node) => node.text)
-          .join(separator);
+          .join(separator)
+          .replaceAll('\'', '\'\'');
 
       // on readings
       var onReadings = character
@@ -89,7 +90,7 @@ void main() async {
           "('$literal', '$meanings', '$onReadings', '$kunReadings', $strokes, $freq, $jlpt, $grade, $heisig6),";
 
       // test
-      if (i > 10) {
+      if (i > 501) {
         sql = sql.substring(0, sql.length - 1);
         print(sql);
         db.execute(sql);
