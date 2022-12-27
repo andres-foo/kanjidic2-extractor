@@ -9,6 +9,18 @@ void main() async {
 
   // database
   final db = sqlite3.open(outputFile);
+  db.execute('''
+    CREATE TABLE kanjis (
+      literal TEXT NOT NULL PRIMARY KEY,
+      meanings TEXT NOT NULL,
+      strokes INTEGER NOT NULL,
+      frequency INTEGER NULL,
+      jlpt INTEGER NULL,
+      heisg6 INTEGER NULL,
+      onReadings TEXT NULL,
+      kunReadings TEXT NULL
+    );
+  ''');
   db.dispose();
 
   File(inputFile).readAsString().then((String contents) {
